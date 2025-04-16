@@ -1,0 +1,148 @@
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .card {
+            background-color: #3b82f6;
+            padding: 16px;
+            border-radius: 8px;
+        }
+        .card h2 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        .card input, .card select, .card button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+        .card button {
+            background-color: #1d4ed8;
+            color: white;
+        }
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .book-item button {
+            background-color: #1d4ed8;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Personal Book Library</h1>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <h2>Add a New Book</h2>
+                <input type="text" id="title" placeholder="Title">
+                <input type="text" id="author" placeholder="Author">
+                <select id="category">
+                    <option>History</option>
+                </select>
+                <button onclick="addBook()">Add Book</button>
+            </div>
+            <div class="card">
+                <h2>Search Books</h2>
+                <input type="text" id="search" placeholder="Search by title or author" oninput="searchBooks()">
+            </div>
+            <div class="card">
+                <h2>Book Library</h2>
+                <div id="book-list">
+                    <div class="book-item">
+                        <span>امراء جن ادا از مرزا بادی رسوا</span>
+                        <button onclick="removeBook(this)">Remove</button>
+                    </div>
+                    <div class="book-item">
+                        <span>آب حیات از محمد حسین آزاد</span>
+                        <button onclick="removeBook(this)">Remove</button>
+                    </div>
+                    <div class="book-item">
+                        <span>الف لیل و لیل از نامعلوم</span>
+                        <button onclick="removeBook(this)">Remove</button>
+                    </div>
+                    <div class="book-item">
+                        <span>راجه گدھ از بانو قدسیہ</span>
+                        <button onclick="removeBook(this)">Remove</button>
+                    </div>
+                    <div class="book-item">
+                        <span>خدا کی بستی از شوکت صدیقی</span>
+                        <button onclick="removeBook(this)">Remove</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Borrowing History</h2>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addBook() {
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const category = document.getElementById('category').value;
+
+            if (title && author) {
+                const bookList = document.getElementById('book-list');
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item';
+                bookItem.innerHTML = `<span>${title} از ${author}</span><button onclick="removeBook(this)">Remove</button>`;
+                bookList.appendChild(bookItem);
+
+                document.getElementById('title').value = '';
+                document.getElementById('author').value = '';
+            }
+        }
+
+        function removeBook(button) {
+            const bookItem = button.parentElement;
+            bookItem.remove();
+        }
+
+        function searchBooks() {
+            const searchValue = document.getElementById('search').value.toLowerCase();
+            const bookItems = document.querySelectorAll('.book-item');
+
+            bookItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchValue)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
