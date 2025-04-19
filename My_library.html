@@ -1,148 +1,214 @@
-<html>
-<head>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background-color: #f3f4f6;
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   My Book Library
+  </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   body {
+            background: url('https://placehold.co/800x600?text=Background+Image+of+Books') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
         }
         .container {
-            max-width: 1024px;
-            margin: 0 auto;
-            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
         }
-        .header h1 {
-            font-size: 24px;
-            font-weight: bold;
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .grid {
+        .search-bar input, .search-bar select {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+        .book-list {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        .card {
-            background-color: #3b82f6;
-            padding: 16px;
-            border-radius: 8px;
-        }
-        .card h2 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-        .card input, .card select, .card button {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
-        .card button {
-            background-color: #1d4ed8;
-            color: white;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
         }
         .book-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 10px;
+            border-radius: 5px;
+            transition: transform 0.2s;
         }
-        .book-item button {
-            background-color: #1d4ed8;
+        .book-item:hover {
+            transform: scale(1.05);
+        }
+        .borrow-btn {
+            background: #38b2ac;
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>My Personal Book Library</h1>
-        </div>
-        <div class="grid">
-            <div class="card">
-                <h2>Add a New Book</h2>
-                <input type="text" id="title" placeholder="Title">
-                <input type="text" id="author" placeholder="Author">
-                <select id="category">
-                    <option>History</option>
-                </select>
-                <button onclick="addBook()">Add Book</button>
-            </div>
-            <div class="card">
-                <h2>Search Books</h2>
-                <input type="text" id="search" placeholder="Search by title or author" oninput="searchBooks()">
-            </div>
-            <div class="card">
-                <h2>Book Library</h2>
-                <div id="book-list">
-                    <div class="book-item">
-                        <span>امراء جن ادا از مرزا بادی رسوا</span>
-                        <button onclick="removeBook(this)">Remove</button>
-                    </div>
-                    <div class="book-item">
-                        <span>آب حیات از محمد حسین آزاد</span>
-                        <button onclick="removeBook(this)">Remove</button>
-                    </div>
-                    <div class="book-item">
-                        <span>الف لیل و لیل از نامعلوم</span>
-                        <button onclick="removeBook(this)">Remove</button>
-                    </div>
-                    <div class="book-item">
-                        <span>راجه گدھ از بانو قدسیہ</span>
-                        <button onclick="removeBook(this)">Remove</button>
-                    </div>
-                    <div class="book-item">
-                        <span>خدا کی بستی از شوکت صدیقی</span>
-                        <button onclick="removeBook(this)">Remove</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <h2>Borrowing History</h2>
-            </div>
-        </div>
+        .borrow-btn:hover {
+            background: #319795;
+        }
+        .history {
+            background: rgba(255, 255, 255, 0.75);
+            padding: 20px;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .history h2 {
+            margin-top: 0;
+        }
+        .history ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .history ul li {
+            background: rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .book-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+  </style>
+ </head>
+ <body>
+  <div class="container">
+   <h1>
+    My Book Library
+   </h1>
+   <div class="search-bar">
+    <input id="searchInput" placeholder="Search books..." type="text"/>
+    <select id="categorySelect">
+     <option>
+      All Categories
+     </option>
+     <option>
+      Fiction
+     </option>
+     <option>
+      Non-fiction
+     </option>
+     <option>
+      Science
+     </option>
+     <option>
+      History
+     </option>
+    </select>
+   </div>
+   <div class="book-list">
+    <div class="book-item">
+     <img alt="The Great Gatsby" height="50" src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-Xg2enKJpK0cPcfjKtDOjaztK.png?st=2025-04-16T14%3A39%3A50Z&amp;se=2025-04-16T16%3A39%3A50Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=cc612491-d948-4d2e-9821-2683df3719f5&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-04-15T23%3A16%3A13Z&amp;ske=2025-04-16T23%3A16%3A13Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=0EKXpnVm%2BZUo0vey1ZaDIQK9hCGAahXGxjdXcl4XAAM%3D" width="50"/>
+     <span>
+      The Great Gatsby (Fiction)
+     </span>
+     <button class="borrow-btn" onclick="addToHistory('The Great Gatsby')">
+      Borrow
+     </button>
     </div>
-
-    <script>
-        function addBook() {
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const category = document.getElementById('category').value;
-
-            if (title && author) {
-                const bookList = document.getElementById('book-list');
-                const bookItem = document.createElement('div');
-                bookItem.className = 'book-item';
-                bookItem.innerHTML = `<span>${title} از ${author}</span><button onclick="removeBook(this)">Remove</button>`;
-                bookList.appendChild(bookItem);
-
-                document.getElementById('title').value = '';
-                document.getElementById('author').value = '';
-            }
-        }
-
-        function removeBook(button) {
-            const bookItem = button.parentElement;
-            bookItem.remove();
-        }
-
-        function searchBooks() {
-            const searchValue = document.getElementById('search').value.toLowerCase();
-            const bookItems = document.querySelectorAll('.book-item');
-
-            bookItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                if (text.includes(searchValue)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
+    <div class="book-item">
+     <img alt="A Brief History of Time" height="50" src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-r97xrH3yrxYg3O9tqvC44fPj.png?st=2025-04-16T14%3A39%3A42Z&amp;se=2025-04-16T16%3A39%3A42Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=cc612491-d948-4d2e-9821-2683df3719f5&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-04-15T23%3A02%3A22Z&amp;ske=2025-04-16T23%3A02%3A22Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=KbkkQkUdWJ2YQi%2BspPqurR5VGJCLW9WpF/EH77k7WGU%3D" width="50"/>
+     <span>
+      A Brief History of Time (Science)
+     </span>
+     <button class="borrow-btn" onclick="addToHistory('A Brief History of Time')">
+      Borrow
+     </button>
+    </div>
+    <div class="book-item">
+     <img alt="Sapiens" height="50" src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-9PawTUAkUrJy1pE78pNBkn1l.png?st=2025-04-16T14%3A39%3A43Z&amp;se=2025-04-16T16%3A39%3A43Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=cc612491-d948-4d2e-9821-2683df3719f5&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-04-16T05%3A20%3A11Z&amp;ske=2025-04-17T05%3A20%3A11Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=g23OtgnNkpTrXu1WGGpmO3lEyAU%2BSjlzixG8QDqOmo8%3D" width="50"/>
+     <span>
+      Sapiens (History)
+     </span>
+     <button class="borrow-btn" onclick="addToHistory('Sapiens')">
+      Borrow
+     </button>
+    </div>
+    <div class="book-item">
+     <img alt="Educated" height="50" src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-iWDAyDYbZFhLI61eezT4Hbpr.png?st=2025-04-16T14%3A39%3A47Z&amp;se=2025-04-16T16%3A39%3A47Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=cc612491-d948-4d2e-9821-2683df3719f5&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-04-16T05%3A27%3A37Z&amp;ske=2025-04-17T05%3A27%3A37Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=rvdxHW7newsE6o7nsK8vfkMwvrtUh8dwDYU0Nujaoms%3D" width="50"/>
+     <span>
+      Educated (Non-fiction)
+     </span>
+     <button class="borrow-btn" onclick="addToHistory('Educated')">
+      Borrow
+     </button>
+    </div>
+    <div class="book-item">
+     <img alt="1984" height="50" src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-giWoix0LYjQ78E4CpWR7qgld.png?st=2025-04-16T14%3A39%3A49Z&amp;se=2025-04-16T16%3A39%3A49Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=cc612491-d948-4d2e-9821-2683df3719f5&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-04-16T03%3A09%3A44Z&amp;ske=2025-04-17T03%3A09%3A44Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=lymCzilAOq5pVY4wOTCpfCHHsZN%2BIvCyFb1qpWD70zg%3D" width="50"/>
+     <span>
+      1984 (Fiction)
+     </span>
+     <button class="borrow-btn" onclick="addToHistory('1984')">
+      Borrow
+     </button>
+    </div>
+   </div>
+   <div class="history">
+    <h2>
+     Borrowing History
+    </h2>
+    <ul id="historyList">
+     <li>
+      The Great Gatsby - Borrowed on 4/15/2025, 11:09:54 PM
+     </li>
+     <li>
+      Sapiens - Borrowed on 4/15/2025, 11:09:56 PM
+     </li>
+     <li>
+      1984 - Borrowed on 4/15/2025, 11:09:58 PM
+     </li>
+     <li>
+      Educated - Borrowed on 4/15/2025, 11:09:59 PM
+     </li>
+     <li>
+      A Brief History of Time - Borrowed on 4/15/2025, 11:10:00 PM
+     </li>
+    </ul>
+   </div>
+  </div>
+  <script>
+   function addToHistory(bookName) {
+            const historyList = document.getElementById('historyList');
+            const currentDate = new Date();
+            const formattedDate = currentDate.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'numeric', 
+                day: 'numeric', 
+                hour: 'numeric', 
+                minute: 'numeric', 
+                second: 'numeric', 
+                hour12: true 
             });
+            const newHistoryItem = document.createElement('li');
+            newHistoryItem.textContent = `${bookName} - Borrowed on ${formattedDate}`;
+            historyList.appendChild(newHistoryItem);
         }
-    </script>
-</body>
+  </script>
+ </body>
 </html>
